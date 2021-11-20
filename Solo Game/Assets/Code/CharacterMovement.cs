@@ -64,7 +64,7 @@ public class CharacterMovement : MonoBehaviour
 
         if(Input.GetKey("space")&& isGrounded)
         {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, 3);
+            rb2d.velocity = new Vector2(rb2d.velocity.x, 4);
             animator.Play("jump");
         }
     }
