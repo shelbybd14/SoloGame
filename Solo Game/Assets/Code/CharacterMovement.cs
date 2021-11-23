@@ -52,9 +52,9 @@ public class CharacterMovement : MonoBehaviour
             rb2d.velocity = new Vector2(-2, rb2d.velocity.y);
 
             if (isGrounded)
-                animator.Play("walk_right");
+                animator.Play("walk_left");
 
-              spriteRenderer.flipX = true;
+              spriteRenderer.flipX = false;
         }
 
         else

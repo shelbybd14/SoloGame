@@ -8,7 +8,7 @@ using UnityEngine;
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKey("space"))
         {
             Attack();
         }
@@ -17,7 +17,7 @@ using UnityEngine;
     void Attack()
     {
         //Play attack animation
-        animator.SetTrigger("attack");
+        animator.Play("attack");
 
         //detect enemies in range
         //damage enemies
