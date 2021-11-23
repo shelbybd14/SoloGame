@@ -25,7 +25,10 @@ public class CharacterMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")))
+        if(Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) ||
+            Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) ||
+            Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")))
+           
         {
             isGrounded = true;
         }
@@ -62,7 +65,7 @@ public class CharacterMovement : MonoBehaviour
             rb2d.velocity = new Vector2(0, rb2d.velocity.y);
         }
 
-        if(Input.GetKey("space")&& isGrounded)
+        if(Input.GetKey("w")&& isGrounded || Input.GetKey("up") && isGrounded)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, 4);
             animator.Play("jump");
