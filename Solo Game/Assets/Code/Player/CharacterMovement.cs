@@ -57,6 +57,16 @@ public class CharacterMovement : MonoBehaviour
               spriteRenderer.flipX = false;
         }
 
+        else if (Input.GetKey("space"))
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
+
+            if (isGrounded)
+                animator.Play("attack");
+
+            spriteRenderer.flipX = false;
+        }
+
         else
         {
             if (isGrounded)
