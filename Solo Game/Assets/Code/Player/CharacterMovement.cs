@@ -8,6 +8,7 @@ public class CharacterMovement : MonoBehaviour
     private Rigidbody2D body;
     private Animator anim;
     private bool grounded;
+    private float horizontalInput;
 
     private void Awake()
     {
@@ -18,7 +19,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
+        horizontalInput = Input.GetAxis("Horizontal");
         body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
 
         //flip player sprite for the x axis
@@ -46,5 +47,10 @@ public class CharacterMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
             grounded = true;
+    }
+
+    public bool canAttack()
+    {
+        return horizontalInput == 0 && grounded;
     }
 }
