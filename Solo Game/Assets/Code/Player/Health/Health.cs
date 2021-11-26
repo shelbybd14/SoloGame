@@ -18,7 +18,7 @@ public class Health : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
         if(currentHealth >0)
         {
-            anim.SetTrigger("hit");
+            anim.SetTrigger("hurt");
         }
         else
         {

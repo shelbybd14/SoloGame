@@ -1,84 +1,50 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    Animator animator;
-    Rigidbody2D rb2d;
-    SpriteRenderer spriteRenderer;
-
-    bool isGrounded;
-
     [SerializeField]
-    Transform groundCheck;
+    private float speed;
 
-    // Start is called before the first frame update
-    void Start()
+    private Rigidbody2D body;
+    private Animator anim;
+    private bool grounded;
+
+    private void Awake()
     {
-
-        animator = GetComponent<Animator>();
-        rb2d = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        //references components in unity 
+        body = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
-
-    private void FixedUpdate()
+    private void Update()
     {
-        if(Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) ||
-            Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) ||
-            Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")))
-           
+        float horizontalInput = Input.GetAxis("Horizontal");
+        body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
+
+        //flip player sprite for the x axis
+        if (horizontalInput > 0.01f)
+            transform.localScale = Vector3.one;
+        else if (horizontalInput < -0.01f)
+            transform.localScale = new Vector3(-1,1,1);
+
+        if (Input.GetKey(KeyCode.W) &&grounded|| Input.GetKey(KeyCode.UpArrow) && grounded)
+            Jump();
+
+        anim.SetBool("walk_right", horizontalInput != 0);
+        anim.SetBool("grounded", grounded);
+        
+        
+    }
+    private void Jump()
         {
-            isGrounded = true;
+            body.velocity = new Vector2(body.velocity.x, 5);
+            grounded = false;
+            anim.SetTrigger("jump");
         }
 
-        else
-        {
-            isGrounded = false;
-        }
-        if(Input.GetKey("d")|| Input.GetKey("right"))
-        {
-            rb2d.velocity = new Vector2(2,rb2d.velocity.y);
-
-            if(isGrounded)
-            animator.Play("walk_right");
-
-            spriteRenderer.flipX = false;
-
-        }
-        else if(Input.GetKey("a")|| Input.GetKey("left"))
-        {
-            rb2d.velocity = new Vector2(-2, rb2d.velocity.y);
-
-            if (isGrounded)
-                animator.Play("walk_left");
-
-              spriteRenderer.flipX = false;
-        }
-
-        else if (Input.GetKey("space"))
-        {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
-
-            if (isGrounded)
-                animator.Play("attack");
-
-            spriteRenderer.flipX = false;
-        }
-
-        else
-        {
-            if (isGrounded)
-                animator.Play("idle");
-
-            rb2d.velocity = new Vector2(0, rb2d.velocity.y);
-        }
-
-        if(Input.GetKey("w")&& isGrounded || Input.GetKey("up") && isGrounded)
-        {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, 4);
-            animator.Play("jump");
-        }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+            grounded = true;
     }
 }
